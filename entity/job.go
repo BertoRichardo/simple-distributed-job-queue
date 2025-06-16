@@ -1,10 +1,19 @@
 package entity
 
+type JobStatusEnum string
+
+const (
+	StatusPending   JobStatusEnum = "PENDING"
+	StatusRunning   JobStatusEnum = "RUNNING"
+	StatusCompleted JobStatusEnum = "COMPLETED"
+	StatusFailed    JobStatusEnum = "FAILED"
+)
+
 type Job struct {
-	ID       string `json:"id"`
-	Task     string `json:"task"`
-	Status   string `json:"status"`
-	Attempts int32  `json:"attempts"`
+	ID       string        `json:"id"`
+	Task     string        `json:"task"`
+	Status   JobStatusEnum `json:"status"` 
+	Attempts int32         `json:"attempts"`
 }
 
 type JobStatus struct {

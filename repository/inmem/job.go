@@ -46,6 +46,21 @@ func (t *jobRepository) FindAll(ctx context.Context) ([]*entity.Job, error) {
 	return jobs, nil
 }
 
+// FindManyByIDs get jobs list by ID slice
+func (t *jobRepository) FindManyByIDs(ctx context.Context, ids []string) ([]*entity.Job, error) {
+	t.mu.RLock()
+	defer t.mu.RUnlock()
+
+	jobs := make([]*entity.Job, 0, len(ids))
+	for _, id := range ids {
+		if job, exists := t.inMemDb[id]; exists {
+			jobs = append(jobs, job)
+		}
+	}
+	return jobs, nil
+}
+
+
 // Initiator ...
 type Initiator func(s *jobRepository) *jobRepository
 

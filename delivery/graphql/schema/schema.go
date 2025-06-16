@@ -1,6 +1,5 @@
 package schema
 
-// TODO:
 // 	- explain why I use .graphql files to define the schema
 // 	- explain why we embed the .graphql files in the binary.
 // 	- explain why this file is necessary and how the method is used.

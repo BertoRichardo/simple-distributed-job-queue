@@ -1,42 +1,58 @@
 mutation SimultaneousCreateJob($Job1: String!, $Job2: String!, $Job3: String!) {
-  job1: Enqueue(task:$Job1) {
-    id
-  }
-  job2: Enqueue(task:$Job2) {
-    id
-  }
-  job3: Enqueue(task:$Job3) {
-    id
-  }
+	job1: Enqueue(task: $Job1) {
+		id
+	}
+	job2: Enqueue(task: $Job2) {
+		id
+	}
+	job3: Enqueue(task: $Job3) {
+		id
+	}
 }
 
 mutation SimulateUnstableJob {
-  Enqueue(task: "unstable-job") {
-    id
-    attempts
-    status
-  }
+	Enqueue(task: "unstable-job") {
+		id
+		attempts
+		status
+	}
+}
+
+mutation CreateManyNormalJobs($count: Int!, $prefix: String!) {
+	SimultaneousCreateJob(count: $count, taskPrefix: $prefix) {
+		id
+		task
+	}
+}
+
+mutation CreateManyUnstableJobs($count: Int!) {
+	CreateManyUnstableJobs(count: $count) {
+		id
+		task
+	}
 }
 
 query GetAllJobs {
-  Jobs {
-    id
-  }
+	Jobs {
+		id
+		status
+		attempts
+	}
 }
 
 query GetJobById {
-  Job(id: "some-id") {
-    id
-    status
-    attempts
-  }
+	Job(id: "some-id") {
+		id
+		status
+		attempts
+	}
 }
 
-query GetAllJobStatus{
-   JobStatus{
-    pending
-    running
-    failed
-    completed
-  }
+query GetAllJobStatus {
+	JobStatus {
+		pending
+		running
+		failed
+		completed
+	}
 }

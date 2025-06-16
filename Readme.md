@@ -10,24 +10,11 @@ a simple job queue system built by golang
 -> should be look like this
 ![Graphiql](./docs/graphiql.jpg)
 
-## Requirements
-make sure you complete all the function stated at first you load graphiql page
-1. SimultaneousCreateJob -> build a simultaneous job
-2. SimulateUnstableJob -> special case for task "unstable-job" fails twice before passing
-3. GetAllJobs -> get all jobs that already registered
-4. GetJobById -> get job by the id that been created by enqueue job
-5. GetAllJobStatus -> get the stats of all jobs that been processed
+## The use .graphql files to define the schema
+> Using .graphql files follows a Schema-First Development approach. This practice treats the schema as a clear, language-agnostic contract between the frontend and backend. It serves as a single source of truth that both teams can rely on and is supported by a wide range of developer tools for testing and documentation.
 
-## Evaluation Criteria:
-* **Correctness**: Job creation, execution, status updates are accurate.
-* **Concurrency Safety**: Multiple jobs created/processed at once → no race, no corruption.
-* **Idempotency Handling**: Same job/task with same ID or token → doesn't process twice.
-* **Retry Logic**: Failing job retries up to N times with delay.
-* **In-memory Safety**: Maps/lists used safely under concurrent access.
-* **Code Quality**: Idiomatic Go, good naming, clean package layout.
-* **Clean Architecture**: Separation of domain, repository, resolver, GraphQL models.
-* **Performance Awareness**: Handles 50–100 concurrent jobs without crash or slowdown.
-* **Logging and Debugging**: Logs meaningful events.
-* **Graceful Failure Handling**: No panics; job failure doesn’t crash system.
+## Embedding the .graphql files in the binary
+> Embedding the schema files into the final program (the binary) is for portability and deployment reliability. It packages the entire application into a single, self-contained executable file. This means you don't have to worry about copying extra files to the server or dealing with incorrect file paths in a production environment. The schema is guaranteed to be available because it's part of the program itself.
 
-# Good Luck Guys
+##  Why is schema.go necessary and how is the method String() used?
+> This file acts as a clean "bridge" to the embedded schema data. It hides the complex, auto-generated code in bindata.go from the rest of your application. The String() function reads all the separate .graphql files that were embedded into the binary, concatenates them into a single string, and returns it. This complete schema string is then used in main.go to initialize the GraphQL server.

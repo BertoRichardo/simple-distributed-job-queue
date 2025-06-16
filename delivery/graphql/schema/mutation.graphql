@@ -1,4 +1,7 @@
 type Mutation {
   # Create New Job
   Enqueue(task: String!): Job!
+  SimultaneousCreateJob(count: Int!, taskPrefix: String!): [Job!]
+  CreateManyUnstableJobs(count: Int!): [Job!]
+  SimulateUnstableJob: Job!
 }
